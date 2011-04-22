@@ -272,13 +272,13 @@ class IP
     # nil otherwise
     def self.parse(str)
       if str =~ /\A(\d+)\.(\d+)\.(\d+)\.(\d+)(?:\/((\d+)|((\d+)\.(\d+)\.(\d+)\.(\d+))))?(?:@(.*))?\z/
-				pfxlen = if $8
-					mask_addrs = [$8.to_i, $9.to_i, $10.to_i, $11.to_i]
-	        mask_addr = (((((mask_addrs[0] << 8) | mask_addrs[1]) << 8) | mask_addrs[2]) << 8) | mask_addrs[3]
-					32 - (0..31).detect { |n| mask_addr & (1 << n) != 0 }
-				else
-					($6 || ADDR_BITS).to_i
-				end
+        pfxlen = if $8
+          mask_addrs = [$8.to_i, $9.to_i, $10.to_i, $11.to_i]
+          mask_addr = (((((mask_addrs[0] << 8) | mask_addrs[1]) << 8) | mask_addrs[2]) << 8) | mask_addrs[3]
+          32 - (0..31).detect { |n| mask_addr & (1 << n) != 0 }
+        else
+          ($6 || ADDR_BITS).to_i
+        end
         return nil if pfxlen > 32
         addrs = [$1.to_i, $2.to_i, $3.to_i, $4.to_i]
         return nil if addrs.find { |n| n>255 }
