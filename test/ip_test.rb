@@ -12,6 +12,16 @@ class IPTest < Test::Unit::TestCase
       assert_equal 26, res.pfxlen
       assert_nil res.ctx
     end
+
+    should "build from string with netmask" do
+      res = IP.new("1.2.3.4/255.255.255.224")
+      assert_equal IP::V4, res.class
+      assert_equal "1.2.3.4/27", res.to_s
+      assert_equal "1.2.3.4/27", res.to_addrlen
+      assert_equal 0x01020304, res.to_i
+      assert_equal 27, res.pfxlen
+      assert_nil res.ctx
+    end
     
     should "build from string with ctx" do
       res = IP.new("1.2.3.4/26@nat")
